@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>星轨节奏 Starline Beat</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="stars"></div>
+  <div class="app">
+    <aside class="panel">
+      <div class="brand">✦ 音乐节奏游戏 · 霓虹视觉风格</div>
+      <h1>星轨节奏<br><span class="gradient">Starline Beat</span></h1>
+      <p class="desc">
+        音符会从上往下移动，接近发光判定线时按下对应按键。
+        内置四首不同节奏的曲目，左到右分别是 <b>D F J K</b>。按键时机越准，得分和连击越高。
+      </p>
+
+      <button class="big-button" id="startBtn">开始游戏（Space）</button>
+      <button class="ghost-button" id="practiceBtn">练习模式：慢速开始</button>
+      <button class="ghost-button" id="pauseBtn" disabled>暂停 / 继续（P）</button>
+      <button class="ghost-button" id="restartBtn">重新开始（R）</button>
+      <button class="ghost-button" id="musicBtn">背景音乐：开（M）</button>
+
+      <div class="song-select">
+        <div class="select-head">
+          <span>当前曲目</span>
+          <b id="songName">Neon Classroom</b>
+        </div>
+        <p id="songInfo">基础难度 · 中速节奏 · 适合熟悉玩法</p>
+        <div class="song-buttons" id="songButtons"></div>
+      </div>
+
+      <div class="stat-grid">
+        <div class="stat"><div class="label">Score</div><div class="value" id="score">0</div></div>
+        <div class="stat"><div class="label">Combo</div><div class="value" id="comboSide">0</div></div>
+        <div class="stat"><div class="label">Best</div><div class="value" id="best">0</div></div>
+        <div class="stat"><div class="label">Accuracy</div><div class="value" id="acc">100%</div></div>
+        <div class="stat"><div class="label">Hit</div><div class="value" id="hitCount">0</div></div>
+        <div class="stat"><div class="label">Miss</div><div class="value" id="missCount">0</div></div>
+      </div>
+
+      <div class="beat-dots"><span></span><span></span><span></span><span></span></div>
+      <p class="desc">
+        支持全键盘操作：Space / Enter 开始，P 暂停或继续，R 重新开始，M 开关音乐，1-4 或 [ ] 选曲，D/F/J/K 击打音符。
+      </p>
+    </aside>
+
+    <main class="game-wrap">
+      <section class="stage" id="stage" tabindex="0">
+        <div class="hud-top">
+          <div class="song-title" id="songTitle">♪ Neon Classroom</div>
+          <div class="combo">
+            <div class="num" id="combo">0</div>
+            <div class="word">COMBO</div>
+          </div>
+        </div>
+
+        <div class="lane-area" id="laneArea">
+          <div class="lane" data-lane="0"><div class="lane-key" id="key0">D</div></div>
+          <div class="lane" data-lane="1"><div class="lane-key" id="key1">F</div></div>
+          <div class="lane" data-lane="2"><div class="lane-key" id="key2">J</div></div>
+          <div class="lane" data-lane="3"><div class="lane-key" id="key3">K</div></div>
+        </div>
+
+        <div class="judge-line"></div>
+        <div class="keyboard-hint" id="statusText">Space / Enter 开始 · D F J K 击打 · P 暂停 · R 重开 · M 音乐 · [ ] 选曲</div>
+        <div class="progress"><div id="progressBar"></div></div>
+
+        <div class="overlay" id="startOverlay">
+          <div class="overlay-card">
+            <h2>星轨节奏挑战</h2>
+            <p>先选择曲目，再按 Space 或 Enter 开始。音符接近横线时按 D/F/J/K 击打，游戏中可按 P 暂停、R 重开、M 开关音乐。</p>
+            <div class="key-list">
+              <div class="key-pill">D</div>
+              <div class="key-pill">F</div>
+              <div class="key-pill">J</div>
+              <div class="key-pill">K</div>
+            </div>
+            <button class="big-button" onclick="startGame(false)">开始挑战</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <aside class="panel">
+      <h2 class="mini-title">作品功能</h2>
+      <div class="tips">
+        <div class="tip"><span>🎮</span><div><b>四轨谱面：</b>音符按音乐节拍出现在四条轨道，分别对应 D/F/J/K。</div></div>
+        <div class="tip"><span>♫</span><div><b>曲目选择：</b>内置多首不同速度和谱面密度的曲子，可在开始前切换。</div></div>
+        <div class="tip"><span>⌨️</span><div><b>键盘控制：</b>支持开始、暂停、继续、重开和击打音符，全程不需要鼠标。</div></div>
+        <div class="tip"><span>♪</span><div><b>背景音乐：</b>游戏中会播放循环旋律，并支持一键开关。</div></div>
+        <div class="tip"><span>✨</span><div><b>判定系统：</b>根据按键时机给出 Perfect、Great、Good、Miss。</div></div>
+        <div class="tip"><span>🔥</span><div><b>连击系统：</b>连续命中会提高 Combo，并带来额外得分。</div></div>
+        <div class="tip"><span>📊</span><div><b>数据面板：</b>实时显示分数、连击、准确率、命中数和失误数。</div></div>
+        <div class="tip"><span>🌌</span><div><b>视觉反馈：</b>按键高亮、判定文字、星空背景和霓虹轨道同步变化。</div></div>
+      </div>
+
+      <h2 class="mini-title" style="margin-top:22px;">设计说明</h2>
+      <p class="desc">
+        本作品以“音乐节奏游戏”为主题，实现了曲目选择、音符生成、下落动画、背景音乐、全键盘操作、暂停继续、节奏判定、得分系统和游戏结束结算，形成了完整的前端交互小游戏原型。
+      </p>
+    </aside>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>
