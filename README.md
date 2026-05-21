@@ -9,7 +9,7 @@
 ## 文件结构
 
 ```text
-rhythm_star_game_separated/
+Starline_Beat_Rhythm_Game/
 ├── index.html   网页主体结构
 ├── style.css    页面样式和动画
 ├── game.js      游戏核心逻辑
